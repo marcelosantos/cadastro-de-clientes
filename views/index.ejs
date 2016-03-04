@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="http://fortaleza2040.fortaleza.ce.gov.br/palestras/includes/bootstrap/css/bootstrap.min.css">
+    <link href="https://bootswatch.com/yeti/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <ng-view></ng-view>
+
+    <!-- Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.min.js"></script>
+
+    <!-- Template -->
+    <script type="text/ng-template" id="/clientes.html">
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Loja</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <form class="navbar-form navbar-right" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Buscar por nome" ng-model="search.name">
+            </div>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><%= title %></h3>
+        </div>
+        <div class="panel-body">
+
+        <!--
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search" ng-model="search.name">
+          </div>
+        </form>
+        -->
+
+        <!-- Buscar: <input type="text" ng-model="search.name"> -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Endereço</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cliente in clientes | filter: search">
+                    <th scope="row">#</th>
+                    <td>
+                        <a ng-show="!editing[$index]" href="#/{{cliente._id}}">{{cliente.name}}</a>
+                        <input ng-show="editing[$index]" type="text" ng-model="cliente.name">
+                    </td>
+                    <td>
+                        <a ng-show="!editing[$index]" href="#/{{cliente._id}}">{{cliente.email}}</a>
+                        <input ng-show="editing[$index]" type="text" ng-model="cliente.email">
+                    </td>
+                    <td>
+                        <a ng-show="!editing[$index]" href="#/{{cliente._id}}">{{cliente.endereco}}</a>
+                        <input ng-show="editing[$index]" type="text" ng-model="cliente.endereco">
+                    </td>
+                    <td>
+                        <button ng-show="!editing[$index]" ng-click="edit($index)">Editar</button>
+                        <button ng-show="!editing[$index]" ng-click="remove($index)">Remover</button>
+                        <button ng-show="editing[$index]" ng-click="update($index)">Atualizar</button>
+                        <button ng-show="editing[$index]" ng-click="cancel($index)">Cancelar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <ul style="display:none;">
+          <li ng-repeat="cliente in clientes | filter: search">
+            <input type="checkbox" ng-model="cliente.completed" ng-change="update($index)">
+            <a ng-show="!editing[$index]" href="#/{{cliente._id}}">{{cliente.name}}</a>
+            <button ng-show="!editing[$index]" ng-click="edit($index)">Editar</button>
+            <button ng-show="!editing[$index]" ng-click="remove($index)">Remover</button>
+
+            <input ng-show="editing[$index]" type="text" ng-model="cliente.name">
+            <button ng-show="editing[$index]" ng-click="update($index)">Atualizar</button>
+            <button ng-show="editing[$index]" ng-click="cancel($index)">Cancelar</button>
+          </li>
+        </ul>
+        <form ng-submit="save()" style="display:none;">
+        Novo Cliente <input type="text" ng-model="newCliente"><button>Salvar</button>
+        </form>
+        </div>
+        </div>
+
+        </div>
+        <div class="col-lg-6">
+
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Cadastro de Clientes</h3>
+        </div>
+        <div class="panel-body">
+        <form ng-submit="save()">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Nome</th>
+                    <td>
+                        <input type="text" ng-model="newCliente.nome">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>
+                        <input type="text" ng-model="newCliente.email">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Endereco</th>
+                    <td>
+                        <input type="text" ng-model="newCliente.endereco">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button>Salvar</button>
+        </form>
+        </div>
+        </div>
+
+        </div>
+
+    </div>
+
+    </script>
+
+    <script type="text/ng-template" id="/clienteDetails.html">
+    <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ cliente.name }}</h3>
+    </div>
+    <div class="panel-body">
+    <form ng-submit="update()">
+
+    E-mail: <input ng-model="cliente.email"></input><br><br>
+    Endereco: <input ng-model="cliente.endereco"></input><br><br>
+    Alerta de compra: <input type="checkbox" ng-model="cliente.completed"><br>
+    Observação: <textarea ng-model="cliente.note"></textarea><br><br>
+
+    <button>Atualizar</button>
+    </form>
+    <button ng-click="remove()">Remover</button>
+    <a href="/">Cancelar</a>
+    </div>
+    </div>
+
+    </script>
+
+    <script>
+      angular.module('app', ['ngRoute', 'ngResource'])
+
+        //---------------
+        // Services
+        //---------------
+
+        .factory('Clientes', ['$resource', function($resource){
+          return $resource('/clientes/:id', null, {
+            'update': { method:'PUT' }
+          });
+        }])
+
+        //---------------
+        // Controllers
+        //---------------
+
+        .controller('ClienteController', ['$scope', 'Clientes', function ($scope, Clientes) {
+          $scope.editing = [];
+          $scope.clientes = Clientes.query();
+
+          $scope.save = function(){
+            if(!$scope.newCliente || $scope.newCliente.length < 1) return;
+            var cliente = new Clientes(
+                {
+                    name: $scope.newCliente.nome,
+                    email: $scope.newCliente.nome,
+                    endereco: $scope.newCliente.endereco,
+                    completed: false
+                }
+            );
+
+            cliente.$save(function(){
+              $scope.clientes.push(cliente);
+              $scope.newCliente = ''; // clear textbox
+            });
+          }
+
+          $scope.update = function(index){
+            var cliente = $scope.clientes[index];
+            Clientes.update({id: cliente._id}, cliente);
+            $scope.editing[index] = false;
+          }
+
+          $scope.edit = function(index){
+            $scope.editing[index] = angular.copy($scope.clientes[index]);
+          }
+
+          $scope.cancel = function(index){
+            $scope.clientes[index] = angular.copy($scope.editing[index]);
+            $scope.editing[index] = false;
+          }
+
+          $scope.remove = function(index){
+            var cliente = $scope.clientes[index];
+            Clientes.remove({id: cliente._id}, function(){
+              $scope.clientes.splice(index, 1);
+            });
+          }
+        }])
+
+        .controller('ClienteDetailCtrl', ['$scope', '$routeParams', 'Clientes', '$location', function ($scope, $routeParams, Clientes, $location) {
+          $scope.cliente = Clientes.get({id: $routeParams.id });
+
+          $scope.update = function(){
+            Clientes.update({id: $scope.cliente._id}, $scope.cliente, function(){
+              $location.url('/');
+            });
+          }
+
+          $scope.remove = function(){
+            Clientes.remove({id: $scope.cliente._id}, function(){
+              $location.url('/');
+            });
+          }
+        }])
+
+        //---------------
+        // Routes
+        //---------------
+
+        .config(['$routeProvider', function ($routeProvider) {
+          $routeProvider
+            .when('/', {
+              templateUrl: '/clientes.html',
+              controller: 'ClienteController'
+            })
+
+            .when('/:id', {
+              templateUrl: '/clienteDetails.html',
+              controller: 'ClienteDetailCtrl'
+           });
+        }]);
+    </script>
+  </body>
+</html>
