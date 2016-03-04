@@ -2,18 +2,18 @@
 
 * Pequena aplicação com CRUD de clientes
 
-# Dependências
+Dependências
 
 * NodeJS
 * Express
 * MongoDB
 * AngularJS
  
-# Após o clone do projeto, basta instalar as dependências do package.json com o seguinte comando    
+Após o clone do projeto, basta instalar as dependências do package.json com o seguinte comando    
     
     $ npm install
 
-# E então subir o servidor    
+E então subir o servidor    
     
     $ npm Start
 
