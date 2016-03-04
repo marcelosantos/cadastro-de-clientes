@@ -15,5 +15,5 @@ Após o clone do projeto, basta instalar as dependências do package.json com o 
 
 E então subir o servidor    
     
-    $ npm Start
+    $ npm start
 
