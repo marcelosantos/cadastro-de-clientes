@@ -1,12 +1,11 @@
 {
-  "author": "Marcelo Santos",
+  "author": "Marcelo Santos", 
   "email": "marcelosantosadm@gmail.com",
   "name": "clientesApp",
   "version": "0.0.1",
   "private": true,
   "main": "app.js",
   "scripts": {
-    //"start": "node ./bin/www"
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
