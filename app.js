@@ -65,6 +65,7 @@ app.use(function(err, req, res, next) {
     });
 });
 
-app.listen(5000)
+//commented for deploy tests
+//app.listen(5000)
 
 module.exports = app;
